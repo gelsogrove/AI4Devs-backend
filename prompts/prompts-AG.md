@@ -5,7 +5,7 @@ model : claude-3.7-sonnet
                 # Prompt 1: 
 ==============================================================================================
 
-You are an expert system architect with experience in ATS and REST APIs, Typescript, Node.JS, Generate documentation that includes the folder structure, the technologies used, the architecture, and the REST API contract for @backend. Use a schema in Marmait or ASCII tables
+You are an expert system architect with experience in ATS and REST APIs, Typescript, Node.JS. Please Generate documentation that includes the folder structure, the technologies used, the architecture, and the REST API contract for @backend. Use a schema in Marmait or ASCII tables
 
 
 
@@ -148,16 +148,12 @@ Now that we've defined the requirements and planned the implementation, please b
 
 
  
-# Prompt 4: CHECK
+==============================================================================================
+                #  Prompt 4: final check
+==============================================================================================
+
 - run the build for backend
 - run the build for frontend
 - run the tet
 - Generate curl for testing the new features
 - update Readme.md if need it
-
-
-
-==============================================================================================
-                #  Prompt 3: Ready for the PR
-==============================================================================================
-@Commit (Diff of Working State) please give what we have implemented in this commit
