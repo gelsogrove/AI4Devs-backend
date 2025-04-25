@@ -111,7 +111,7 @@ docker-compose down
 ```
 To generate the database using Prisma, follow these steps:
 
-1. Make sure that the .env file in the root directory of the backend contains the DATABASE_URL variable with the correct connection string to your PostgreSQL database. If it doesn’t work, try replacing the full URL directly in schema.prisma, in the url variable.
+1. Make sure that the .env file in the root directory of the backend contains the DATABASE_URL variable with the correct connection string to your PostgreSQL database. If it doesn't work, try replacing the full URL directly in schema.prisma, in the url variable.
 
 2. Open a terminal and navigate to the backend directory where the schema.prisma and seed.ts files are located.
 
@@ -125,6 +125,11 @@ ts-node seed.ts
 
 Once you have completed all the steps, you should be able to save new candidates, both via web and via API, view them in the database, and retrieve them using GET by ID.
 
+## API Endpoints
+
+### Candidates
+
+#### Add a new candidate
 ```
 POST http://localhost:3010/candidates
 {
@@ -155,6 +160,47 @@ POST http://localhost:3010/candidates
         "fileType": "application/pdf"
     }
 }
+```
+
+#### Get a candidate by ID
+```
+GET http://localhost:3010/candidates/:id
+```
+
+#### Update a candidate's stage
+```
+PUT http://localhost:3010/candidates/:id/stage
+{
+    "stage": "Second interview",
+    "notes": "Candidate performed well in technical assessment"
+}
+```
+
+### Positions
+
+#### Get candidates for a position
+```
+GET http://localhost:3010/positions/:id/candidates
+```
+
+This endpoint supports the following query parameters:
+- `sort`: Sort field - Accepts `name`, `score`, or `stage` (default: `name`)
+- `order`: Sort direction - `asc` or `desc` (default: `asc`)
+- `page`: Page number for pagination (default: 1)
+- `limit`: Items per page (default: 20)
+- `stage`: Filter by interview stage
+- `minScore`: Filter by minimum average score
+
+Example:
+```
+GET http://localhost:3010/positions/1/candidates?sort=score&order=desc&stage=Second%20interview&minScore=7&page=1&limit=5
+```
+
+### File Upload
+
+#### Upload a file
+```
+POST http://localhost:3010/upload
 ```
 
 --------------------------------------------
@@ -248,6 +294,7 @@ Este proyecto usa Docker para ejecutar una base de datos PostgreSQL. Así es có
 Instala Docker en tu máquina si aún no lo has hecho. Puedes descargarlo desde aquí.
 Navega al directorio raíz del proyecto en tu terminal.
 Ejecuta el siguiente comando para iniciar el contenedor Docker:
+
 ```
 docker-compose up -d
 ```

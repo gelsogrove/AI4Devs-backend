@@ -152,6 +152,165 @@ paths:
           description: Bad request (invalid input data)
         '500':
           description: Internal server error
+  
+  /candidates/{id}/stage:
+    put:
+      summary: Update candidate stage
+      description: Updates the stage of a candidate in the selection process
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the candidate to update
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - stage
+              properties:
+                stage:
+                  type: string
+                  description: The new stage to set for the candidate
+                notes:
+                  type: string
+                  description: Optional notes about the stage change
+      responses:
+        '200':
+          description: Stage updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  candidate_id:
+                    type: integer
+                  previous_stage:
+                    type: string
+                  new_stage:
+                    type: string
+                  updated_by:
+                    type: string
+                  updated_at:
+                    type: string
+                    format: date-time
+        '400':
+          description: Bad request (invalid input data)
+        '404':
+          description: Candidate not found
+        '500':
+          description: Internal server error
+          
+  /positions/{id}/candidates:
+    get:
+      summary: Get candidates for a position
+      description: Retrieves a list of candidates for a specific position with sorting, filtering, and pagination
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the position
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          required: false
+          description: Field to sort by
+          schema:
+            type: string
+            enum: [name, score, stage]
+            default: name
+        - name: order
+          in: query
+          required: false
+          description: Sort order (ascending or descending)
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+        - name: page
+          in: query
+          required: false
+          description: Page number for pagination
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          required: false
+          description: Number of items per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: stage
+          in: query
+          required: false
+          description: Filter by interview stage
+          schema:
+            type: string
+        - name: minScore
+          in: query
+          required: false
+          description: Minimum score filter
+          schema:
+            type: number
+            minimum: 0
+            maximum: 10
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        candidate_id:
+                          type: integer
+                        candidate_name:
+                          type: string
+                        current_interview_step:
+                          type: string
+                        average_score:
+                          type: number
+                          nullable: true
+                        last_interview_date:
+                          type: string
+                          format: date-time
+                          nullable: true
+                  pagination:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      limit:
+                        type: integer
+                      pages:
+                        type: integer
+        '400':
+          description: Bad request (invalid input parameters)
+        '404':
+          description: Position not found
+        '500':
+          description: Internal server error
+  
   /upload:
     post:
       summary: Upload a file
