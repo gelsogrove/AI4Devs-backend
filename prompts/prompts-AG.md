@@ -152,8 +152,7 @@ Now that we've defined the requirements and planned the implementation, please b
                 #  Prompt 4: final check
 ==============================================================================================
 
-- run the build for backend
-- run the build for frontend
-- run the tet
+- run the build 
+- run the test
 - Generate curl for testing the new features
-- update Readme.md if need it
+- update Readme.md
